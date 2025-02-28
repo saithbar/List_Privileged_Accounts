@@ -118,13 +118,7 @@ If (  $unattended -eq $true) {
  $OperationsMastersRoleList = $(try{(get-ADDomainController).OperationMasterRoles} Catch{write-host failed to get OperationMasterRoles;[Environment]::Exit(1)})
  If ($OperationsMastersRoleList -ne $Null) {ForEach ($OperationsMastersRole In $OperationsMastersRoleList) {If ($OperationsMastersRole -eq 'PDCEmulator') {$PDCEmulator = $True}}}
  if ($PDCEmulator -ne $True) {write-host DC is not holding PDC Emulator Role;[Environment]::Exit(0)}
-}
 
-# if unattended  mode , the script exclude DC from applications.services.axa-tech.intraxa and ppmail.ppservices.axa-tech.intraxa
-If (  $unattended -eq $true) {
- $DnsDomainName = $(try {(Get-ADDomain).DNSRoot} Catch{write-host failed to get domain name;[Environment]::Exit(1)})
- if ($DnsDomainName -eq "applications.services.axa-tech.intraxa" -or $DnsDomainName -eq "ppmail.ppservices.axa-tech.intraxa"){write-host domain $DnsDomainName out of scope;[Environment]::Exit(0)}
-}
 
 # Load ini file
 $hConfig = LoadConfigFile ("privileged-accounts.ini")
